@@ -1,0 +1,26 @@
+image: docker/compose:alpine-1.26.0
+
+variables:
+  SOURCE_NAME: password-vault
+  NAMESPACE: docker
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - docker build -t "${NAMESPACE}_${SOURCE_NAME}" .
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    - cd /uz_hub/docker
+    - docker-compose stop ${SOURCE_NAME}
+    - docker-compose rm -f ${SOURCE_NAME}
+    - docker-compose up -d ${SOURCE_NAME}
+  only:
+    - master
