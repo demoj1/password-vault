@@ -1,0 +1,226 @@
+@(title: String, headline: String)(body: Html)
+<html>
+  <head>
+    <title>@title</title>
+      <style>
+          * {
+            margin: 5px;
+          }
+
+          body {
+            margin: 15px;
+            font-size: 1.2rem;
+          }
+
+          .vault-list {
+            display: grid;
+            grid-auto-columns: auto;
+            grid-template-columns: repeat(6, 1fr);
+          }
+
+          @@media screen and (max-width: 1900px) {
+            .vault-list {
+              display: grid;
+              grid-auto-columns: auto;
+              grid-template-columns: repeat(5, 1fr);
+            }
+           }
+
+          @@media screen and (max-width: 1600px) {
+            .vault-list {
+              display: grid;
+              grid-auto-columns: auto;
+              grid-template-columns: repeat(4, 1fr);
+            }
+           }
+
+           @@media screen and (max-width: 1200px) {
+            .vault-list {
+              display: grid;
+              grid-auto-columns: auto;
+              grid-template-columns: repeat(3, 1fr);
+            }
+           }
+
+           @@media screen and (max-width: 900px) {
+            .vault-list {
+              display: grid;
+              grid-auto-columns: auto;
+              grid-template-columns: repeat(2, 1fr);
+            }
+           }
+
+           @@media screen and (max-width: 600px) {
+            .vault-list {
+              display: grid;
+              grid-auto-columns: auto;
+              grid-template-columns: repeat(1, 1fr);
+            }
+           }
+
+          .vault-title {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 85%;
+            white-space: nowrap;
+          }
+
+          .vault-card {
+            max-width: 350px;
+            padding: 8px;
+            margin: 8px;
+            display: flex;
+            flex-direction: column;
+            user-select: no-select;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
+          }
+
+          .vault-url {
+            text-decoration: none;
+            margin: 0;
+            margin-bottom: 10px;
+          }
+
+          .vault-description {
+            overflow-wrap: normal;
+            text-overflow: ellipsis;
+            overflow-y: scroll;
+            white-space: pre-wrap;
+            max-height: 150px;
+            padding-left: 10px;
+          }
+
+          .vault-add-new-button {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-size: 1.2rem;
+          }
+
+          .vault-card-new {
+            justify-content: center;
+            align-items: center;
+          }
+
+          .vault-card-new form {
+            width: 100%;
+            height: 100%;
+          }
+
+          .vault-login, .vault-password {
+            margin: 0px;
+            padding: 5px;
+            padding-left: 10px;
+          }
+
+          .vault-login:hover, .vault-password:hover {
+            cursor: copy;
+          }
+
+          .vault-mono {
+            font-family: monospace;
+          }
+
+          .new-form {
+            display: flex;
+            flex-direction: column;
+            max-width: 350px;
+          }
+
+          .new-form-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-top: 8px;
+          }
+
+          .copy-popup {
+            padding: 7px;
+            background-color: aliceblue;
+            height: fit-content;
+            border-radius: 3px;
+            opacity: 0;
+            position: fixed;
+            left: -10000;
+            top: -10000;
+          }
+
+          .vault-remove-form {
+            margin: 0;
+            padding: 0;
+          }
+
+          .vault-remove {
+            cursor: pointer;
+            margin-right: 4px;
+            border: none;
+            background-color: white;
+          }
+
+          .vault-title-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap;
+            align-items: center;
+          }
+      </style>
+  </head>
+  <body>
+    <h1>@headline</h1>
+    @body
+
+    <script type="text/javascript">
+      const popup = document.querySelector('.copy-popup')
+
+      const makeCopyable = selector => {
+        document.querySelectorAll(selector).forEach(e => {
+          e.onclick = evt => {
+            const currentElem = evt.target
+            const currentBox = currentElem.getBoundingClientRect()
+
+            const centerY = currentBox.top + (currentBox.bottom - currentBox.top) / 2;
+
+            const popupBox = popup.getBoundingClientRect()
+
+            popup.style.top = currentBox.bottom - 5 + "px";
+            popup.style.left = currentBox.left + "px";
+
+            setTimeout(() => {
+              popup.style.zIndex = '-1'
+              popup.style.top = '-1000'
+              popup.style.left = '-1000'
+            }, 1005)
+
+            popup.animate([
+              { zIndex: '1' },
+              { opacity: '1' },
+              { opacity: '1' },
+              { opacity: '1' },
+              { opacity: '1' },
+              { opacity: '1' },
+              { opacity: '1' },
+              { opacity: '1' },
+              { opacity: '0' },
+            ], {
+              duration: 1000,
+            })
+
+            document.execCommand("copy")
+          }
+
+          e.addEventListener("copy", evt => {
+            const currentElem = evt.target
+            evt.preventDefault()
+
+            if (evt.clipboardData) evt.clipboardData.setData("text/plain", currentElem.dataset.copyText)
+          })
+        })
+      }
+
+      makeCopyable(".vault-login")
+      makeCopyable(".vault-password")
+    </script>
+  </body>
+</html>

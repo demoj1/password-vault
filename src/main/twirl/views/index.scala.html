@@ -1,0 +1,44 @@
+@(items: List[vault.dto.Item])
+@layouts.html.default("Password vault", "Password vault"){
+
+    <div class="vault-list">
+    @for(item <- items) {
+        <article class="vault-card">
+            <div class="vault-title-container">
+              <h3 class="vault-title"><a href="@item.url" class="vault-url">@item.title</a></h3>
+              <form class="vault-remove-form" method="post" action="/delete/@item.id">
+                <button type="submit" class="vault-remove">❌</button>
+              </form>
+            </div>
+
+            <p class="vault-description">@item.description</p>
+
+            <strong>Login: </strong>
+            <p
+              class="vault-mono vault-login"
+              id="login"
+              title="Copy to clipboard"
+              data-copy-text="@item.login">
+                @item.login
+            </p>
+            <strong>Password: </strong>
+            <p
+              class="vault-mono vault-password"
+              id="password"
+              title="@item.password"
+              data-copy-text="@item.password">
+                @for(_ <- item.password) {*}
+            </p>
+        </article>
+    }
+        <article class="vault-card vault-card-new">
+            <form method="get" action="/new">
+                <button class="vault-add-new-button" type="submit">Add new record</button>
+            </form>
+        </article>
+
+        <div class="copy-popup">
+          <strong>Copied to clipboard!</strong>
+        </div>
+    </div>
+}

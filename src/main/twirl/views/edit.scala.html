@@ -1,0 +1,26 @@
+@()
+@layouts.html.default("Create new item", "Create new item"){
+  <form method="post" action="/new">
+    <div class="new-form" >
+      <label for="title">Title: </label>
+      <input max="255" type="text" id="title" name="title"/>
+
+      <label for="url">Url: </label>
+      <input type="url" max="255" id="url" name="url"/>
+
+      <label for="description">Description: </label>
+      <textarea rows="4" id="description" name="description"></textarea>
+
+      <label for="login">Login: </label>
+      <input type="text" max="255" id="login" name="login"/>
+
+      <label for="password">Password: </label>
+      <input type="text" max="255" id="password" name="password"/>
+
+      <div class="new-form-buttons">
+        <button type="submit">Save</button>
+        <button type="reset">Clear</button>
+      </div>
+    </div>
+  </form>
+}
